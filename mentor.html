@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111b36">
+  <meta name="description" content="AI Mentor — gia sư Toán lớp 1 đến lớp 12, hướng dẫn từng bước và ví dụ minh họa.">
+  <title>AI Mentor · Toán 1–12</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg:#f4f6fb; --paper:#fff; --ink:#16213b; --muted:#66718b;
+      --line:#e4e8f1; --navy:#111b36; --violet:#6d5ce7; --violet-soft:#f0edff;
+      --mint:#16846a; --mint-soft:#e9f7f2; --amber:#aa6c1f; --amber-soft:#fff5e7;
+      --shadow:0 18px 48px rgba(22,33,59,.08); --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 Inter,"Be Vietnam Pro",system-ui,sans-serif}
+    button,input,select,textarea{font:inherit}
+    button,a{touch-action:manipulation}
+    a{color:inherit}
+    button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #6d5ce755;outline-offset:2px}
+    .shell{max-width:1450px;margin:0 auto;padding:22px 28px 48px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:23px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brandmark{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#9184ff,#5141c5);color:white;display:grid;place-items:center;font-size:24px;font-weight:900;box-shadow:0 8px 22px #6755d633}
+    .brand strong{display:block;font-size:15px;letter-spacing:-.4px}
+    .brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:2px}
+    .toplink{color:#5d56b5;font-size:12px;font-weight:800;text-decoration:none}
+    .hero{position:relative;overflow:hidden;border-radius:26px;padding:30px 32px;background:linear-gradient(112deg,#111b36 0%,#282c68 58%,#6557d8 100%);color:white;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;box-shadow:var(--shadow)}
+    .hero:after{content:"∑";position:absolute;right:18%;top:-105px;font-size:310px;line-height:1;color:#ffffff0b;font-weight:900}
+    .eyebrow{font-size:10px;font-weight:900;letter-spacing:1.8px;color:#c6c0ff;text-transform:uppercase}
+    h1{font-size:clamp(27px,4vw,42px);letter-spacing:-1.8px;line-height:1.08;margin:11px 0}
+    .hero p{color:#dddafa;max-width:700px;font-size:13px;line-height:1.8;margin:0}
+    .hero-mark{position:relative;z-index:1;width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#fff,#dcd7ff);color:#5649c9;display:grid;place-items:center;font-size:52px;font-weight:900;transform:rotate(6deg);box-shadow:0 18px 40px #10132f55}
+    .layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 5px 18px #17213d08;min-width:0}
+    .settings{padding:19px;position:sticky;top:16px}
+    .paneltitle{font-size:14px;font-weight:900;margin:0 0 5px;letter-spacing:-.3px}
+    .muted{color:var(--muted)}
+    .sub{font-size:11px;line-height:1.7;margin:0 0 17px;color:var(--muted)}
+    .field{margin:13px 0}
+    label{display:block;font-size:11px;font-weight:800;color:#505b75;margin-bottom:6px}
+    select,input[type=url]{width:100%;border:1px solid var(--line);border-radius:11px;padding:10px 11px;background:#fff;color:var(--ink);font-size:12px}
+    .help{font-size:10px;color:var(--muted);line-height:1.65;margin:7px 0 0}
+    .save{border:0;border-radius:10px;background:var(--violet);color:white;padding:10px 13px;font-size:11px;font-weight:900;cursor:pointer;width:100%}
+    .status{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;padding:9px 10px;border-radius:10px;background:var(--amber-soft);color:var(--amber);margin-top:13px}
+    .status.ok{background:var(--mint-soft);color:var(--mint)}
+    .status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .privacy{padding:11px;margin-top:15px;border-radius:12px;background:#f7f8fc;color:#69748c;font-size:10px;line-height:1.7}
+    .work{display:grid;gap:16px;min-width:0}
+    .chat{padding:18px;display:flex;flex-direction:column;min-height:540px}
+    .chathead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+    .coach{display:flex;align-items:center;gap:10px}
+    .coachicon{width:38px;height:38px;border-radius:13px;background:var(--violet-soft);color:var(--violet);display:grid;place-items:center;font-size:18px;font-weight:900}
+    .coach strong{display:block;font-size:12px}
+    .coach small{font-size:10px;color:var(--mint)}
+    .modes{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+    .mode{border:1px solid var(--line);background:white;color:#68738b;border-radius:30px;padding:7px 11px;font-size:10px;font-weight:800;cursor:pointer}
+    .mode.active{background:var(--violet-soft);border-color:#d8d2ff;color:#5c4acb}
+    .messages{min-height:280px;max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px 15px}
+    .bubble{max-width:min(88%,780px);padding:12px 14px;border-radius:14px;font-size:12px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+    .bubble.bot{align-self:flex-start;background:#f3f2ff;color:#333253;border-top-left-radius:4px}
+    .bubble.user{align-self:flex-end;background:var(--navy);color:white;border-top-right-radius:4px}
+    .bubble.error{background:var(--amber-soft);color:#80541f}
+    .welcome{padding:20px;border:1px dashed #dcd9f4;border-radius:14px;background:#fbfaff;color:#59627a;font-size:12px;line-height:1.8}
+    .welcome strong{color:#4e42b6}
+    .composer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border-top:1px solid var(--line);padding-top:13px}
+    textarea{width:100%;min-height:80px;max-height:180px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.6}
+    .send{align-self:stretch;border:0;border-radius:12px;background:var(--violet);color:white;padding:0 18px;font-size:11px;font-weight:900;cursor:pointer;min-width:108px}
+    .send:disabled{opacity:.55;cursor:wait}
+    .attachrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+    .attach{border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff;color:#58627b;font-size:10px;font-weight:800;cursor:pointer}
+    .imagepreview{display:none;align-items:center;gap:9px;font-size:10px;color:var(--muted)}
+    .imagepreview.show{display:flex}
+    .imagepreview img{max-width:75px;max-height:55px;object-fit:contain;border:1px solid var(--line);border-radius:8px}
+    .remove{border:0;background:none;color:#b24d65;cursor:pointer;font-size:10px;font-weight:800}
+    .examples{padding:18px}
+    .examplehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:13px}
+    .examplehead h2{font-size:15px;margin:0 0 4px}
+    .examplehead p{font-size:10px;color:var(--muted);margin:0;line-height:1.7}
+    .examplegrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .example{border:1px solid var(--line);border-radius:14px;padding:12px;background:white;display:flex;flex-direction:column;gap:7px;min-width:0}
+    .example:hover{border-color:#c9c1ff;box-shadow:0 8px 20px #5f52d510}
+    .exmeta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+    .gradepill{font-size:9px;border-radius:30px;padding:4px 7px;background:var(--violet-soft);color:#5749c3;font-weight:900;white-space:nowrap}
+    .topic{font-size:9px;color:var(--muted);text-align:right}
+    .example h3{font-size:11px;line-height:1.5;margin:0}
+    .formula{font-family:ui-monospace,Consolas,monospace;color:#584dbb;background:#f7f6ff;padding:9px;border-radius:9px;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+    .example button{border:1px solid var(--line);background:white;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:800;color:#5c55ae;cursor:pointer;margin-top:auto}
+    .example button:hover{background:var(--violet-soft)}
+    .detail{padding:17px;display:none}
+    .detail.show{display:block}
+    .detail h3{font-size:14px;margin:0 0 8px}
+    .detail p{font-size:11px;color:var(--muted);line-height:1.7;margin:0 0 10px}
+    .steps{display:grid;gap:8px;margin:12px 0}
+    .step{display:grid;grid-template-columns:25px minmax(0,1fr);gap:9px;align-items:start;font-size:11px;line-height:1.75;color:#536078}
+    .stepnum{width:23px;height:23px;border-radius:8px;background:var(--violet-soft);color:#5b4cc8;display:grid;place-items:center;font-size:10px;font-weight:900}
+    .answer{padding:11px 12px;border-radius:11px;background:var(--mint-soft);color:#16664f;font-size:11px;font-weight:800;line-height:1.7}
+    .detailactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .detailactions button{border:0;border-radius:10px;background:var(--violet);color:white;padding:9px 12px;font-size:10px;font-weight:900;cursor:pointer}
+    .detailactions button.secondary{background:#f1f2f7;color:#59627b}
+    .foot{margin-top:17px;text-align:center;color:#8992a7;font-size:10px;line-height:1.7}
+    .hidden{display:none!important}
+    @media(max-width:1050px){.layout{grid-template-columns:245px minmax(0,1fr)}.examplegrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.shell{padding:14px 13px 35px}.hero{grid-template-columns:1fr;padding:24px}.hero-mark{display:none}.layout{grid-template-columns:1fr}.settings{position:static}.examplegrid{grid-template-columns:repeat(2,minmax(0,1fr))}.chat{min-height:500px}.composer{grid-template-columns:1fr}.send{min-height:42px}.top{align-items:flex-start}}
+    @media(max-width:430px){.examplegrid{grid-template-columns:1fr}.bubble{max-width:96%}.brand small{font-size:9px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <div class="brand">
+        <div class="brandmark">∑</div>
+        <div><strong>AI MENTOR</strong><small>PERSONAL MATH LEARNING · GRADE 1–12</small></div>
+      </div>
+      <a class="toplink" href="./index.html">← Quay lại không gian học tập</a>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">YOUR PERSONAL MATHEMATICS COACH</div>
+        <h1>Hiểu Toán từng bước.<br>Vững kiến thức từng lớp.</h1>
+        <p>Chọn lớp, chọn cách học, gửi bài tập hoặc ảnh đề. AI Mentor sẽ điều chỉnh cách giải theo độ tuổi, giải thích lý do của từng bước và đưa thêm ví dụ tương tự để bạn hiểu cách làm.</p>
+      </div>
+      <div class="hero-mark">∑</div>
+    </section>
+
+    <div class="layout">
+      <aside class="panel settings">
+        <h2 class="paneltitle">Thiết lập buổi học</h2>
+        <p class="sub">Điều chỉnh lời giải theo cấp học và mục tiêu của bạn.</p>
+        <div class="field">
+          <label for="grade">Khối lớp</label>
+          <select id="grade">
+            <option value="auto">Tự nhận diện</option>
+            <option value="1">Lớp 1</option><option value="2">Lớp 2</option><option value="3">Lớp 3</option>
+            <option value="4">Lớp 4</option><option value="5">Lớp 5</option><option value="6">Lớp 6</option>
+            <option value="7">Lớp 7</option><option value="8">Lớp 8</option><option value="9">Lớp 9</option>
+            <option value="10">Lớp 10</option><option value="11">Lớp 11</option><option value="12">Lớp 12</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="topic">Chuyên đề Toán</label>
+          <select id="topic">
+            <option value="Tự nhận diện">Tự nhận diện từ câu hỏi</option>
+            <option>Số học và phép tính</option><option>Phân số và tỉ số</option>
+            <option>Đại số và phương trình</option><option>Hàm số và đồ thị</option>
+            <option>Hình học</option><option>Lượng giác</option><option>Vectơ và tọa độ</option>
+            <option>Xác suất và thống kê</option><option>Giới hạn và đạo hàm</option>
+            <option>Tích phân</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="level">Mức độ</label>
+          <select id="level"><option value="auto">Tự điều chỉnh</option><option>Cơ bản</option><option>Vận dụng</option><option>Nâng cao</option></select>
+        </div>
+        <div class="field">
+          <label for="style">Cách trình bày</label>
+          <select id="style"><option value="socratic">Gợi mở để tự tìm ra</option><option value="detailed">Giải chi tiết từng bước</option><option value="concise">Ngắn gọn, trọng tâm</option></select>
+        </div>
+        <div class="field">
+          <label for="endpoint">Địa chỉ máy chủ AI (HTTPS)</label>
+          <input id="endpoint" type="url" placeholder="https://...workers.dev/api/tutor" autocomplete="off">
+          <p class="help">Dùng chung endpoint đã lưu ở mục Gia sư AI của trang chính. Không nhập API key tại đây. Phụ huynh hoặc nhà trường cần quản lý máy chủ và khóa truy cập.</p>
+        </div>
+        <button class="save" id="saveEndpoint" type="button">Lưu địa chỉ máy chủ</button>
+        <div class="status" id="apiStatus" role="status">Chưa kiểm tra kết nối AI</div>
+        <div class="privacy">Lưu ý: Khi dùng AI trực tuyến, nội dung câu hỏi/ảnh sẽ được gửi tới máy chủ đã cấu hình để xử lý. Không gửi họ tên, địa chỉ, số điện thoại, mật khẩu hoặc thông tin riêng tư. AI có thể mắc lỗi; hãy đối chiếu với sách và giáo viên.</div>
+      </aside>
+
+      <main class="work">
+        <section class="panel chat">
+          <div class="chathead">
+            <div class="coach"><div class="coachicon">✦</div><div><strong>AI Mentor · Math Coach</strong><small id="connectionText">Đang ở chế độ chờ kết nối</small></div></div>
+            <span class="gradepill" id="gradeBadge">TOÁN 1–12</span>
+          </div>
+          <div class="modes" role="group" aria-label="Chọn chế độ gia sư">
+            <button type="button" class="mode active" data-mode="guide">✦ Hướng dẫn</button>
+            <button type="button" class="mode" data-mode="hint">☝ Gợi ý</button>
+            <button type="button" class="mode" data-mode="solve">∑ Giải chi tiết</button>
+            <button type="button" class="mode" data-mode="check">✓ Kiểm tra bài</button>
+            <button type="button" class="mode" data-mode="similar">↻ Bài tương tự</button>
+          </div>
+          <div class="messages" id="messages" aria-live="polite">
+            <div class="welcome" id="welcome">
+              <strong>Chào bạn! Mình là AI Mentor.</strong><br>
+              Hãy chọn khối lớp rồi nhập một bài Toán. Bạn có thể yêu cầu: “Giải thích vì sao”, “Chỉ cho mình gợi ý đầu tiên”, “Kiểm tra từng bước mình đã làm” hoặc “Tạo một bài tương tự”.<br><br>
+              Chưa kết nối AI? Bạn vẫn có thể xem 12 ví dụ mẫu bên dưới để học cách trình bày.
+            </div>
+          </div>
+          <div class="composer">
+            <textarea id="question" placeholder="Nhập đề Toán hoặc câu hỏi bạn đang vướng..." aria-label="Câu hỏi Toán"></textarea>
+            <button class="send" id="send" type="button">Gửi câu hỏi ↗</button>
+          </div>
+          <div class="attachrow">
+            <div>
+              <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" class="hidden">
+              <button type="button" class="attach" id="attachImage">＋ Đính kèm ảnh đề bài</button>
+            </div>
+            <div class="imagepreview" id="imagePreview">
+              <img id="preview" alt="Ảnh đề Toán đã chọn"><span id="imageName">Ảnh đã chọn</span><button class="remove" id="removeImage" type="button">Xóa ảnh</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel examples">
+          <div class="examplehead">
+            <div><h2>12 ví dụ minh họa · từ lớp 1 đến lớp 12</h2><p>Mỗi thẻ có bài toán, các bước giải và kết luận. Chọn “Xem lời giải mẫu” để mở chi tiết.</p></div>
+            <span class="gradepill">HỌC QUA VÍ DỤ</span>
+          </div>
+          <div class="examplegrid" id="exampleGrid"></div>
+        </section>
+
+        <section class="panel detail" id="exampleDetail" aria-live="polite">
+          <h3 id="detailTitle">Lời giải mẫu</h3>
+          <p id="detailQuestion"></p>
+          <div class="steps" id="detailSteps"></div>
+          <div class="answer" id="detailAnswer"></div>
+          <div class="detailactions">
+            <button id="askExample" type="button">Hỏi AI về bài này ↗</button>
+            <button class="secondary" id="closeExample" type="button">Đóng ví dụ</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer class="foot">AI Mentor hỗ trợ học tập Toán từ lớp 1–12 · Ví dụ mẫu do dự án biên soạn để minh họa phương pháp, không thay thế nội dung chính thức của sách giáo khoa.</footer>
+  </div>
+
+  <script>
+  (() => {
+    "use strict";
+    const $ = id => document.getElementById(id);
+    const STORE_KEY = "aiMentorTutorPro_v1";
+    const examples = [
+      {grade:"1",topic:"Phép cộng",title:"Tách số để cộng qua 10",question:"Tính 7 + 5.",formula:"7 + 5 = ?",steps:["Từ 7, cần thêm 3 để được 10.","Tách 5 thành 3 và 2: 7 + 5 = 7 + 3 + 2.","Tính 7 + 3 = 10, rồi 10 + 2 = 12."],answer:"Kết quả: 7 + 5 = 12. Cách nghĩ: làm tròn đến 10 trước rồi cộng phần còn lại."},
+      {grade:"2",topic:"Cộng có nhớ",title:"Cộng hai số có hai chữ số",question:"Tính 34 + 28.",formula:"34 + 28 = ?",steps:["Cộng hàng đơn vị: 4 + 8 = 12, viết 2 nhớ 1 chục.","Cộng hàng chục: 3 + 2 + 1 = 6 chục.","Ghép 6 chục và 2 đơn vị được 62."],answer:"Kết quả: 34 + 28 = 62. Kiểm tra: 34 + 20 + 8 = 54 + 8 = 62."},
+      {grade:"3",topic:"Chu vi hình chữ nhật",title:"Tính chu vi hình chữ nhật",question:"Hình chữ nhật có chiều dài 5 cm, chiều rộng 3 cm. Tính chu vi.",formula:"P = 2 × (dài + rộng)",steps:["Chu vi là tổng độ dài bốn cạnh.","Thay số: P = 2 × (5 + 3).","Tính trong ngoặc trước: 5 + 3 = 8; sau đó 2 × 8 = 16."],answer:"Chu vi hình chữ nhật là 16 cm. Nhớ ghi đơn vị độ dài."},
+      {grade:"4",topic:"Cộng phân số",title:"Cộng hai phân số khác mẫu",question:"Tính 3/4 + 1/8.",formula:"3/4 + 1/8 = ?",steps:["Quy đồng mẫu số: 3/4 = 6/8.","Cộng tử số và giữ nguyên mẫu số: 6/8 + 1/8 = 7/8.","Phân số 7/8 đã tối giản."],answer:"Kết quả: 3/4 + 1/8 = 7/8. Ta chỉ cộng các tử số sau khi hai phân số đã cùng mẫu."},
+      {grade:"5",topic:"Tỉ số phần trăm",title:"Tìm 25% của một số",question:"Tìm 25% của 80.",formula:"25% × 80 = ?",steps:["Đổi 25% thành phân số: 25/100 = 1/4.","Tìm 1/4 của 80: 80 ÷ 4 = 20.","Có thể kiểm tra: 20/80 = 1/4 = 25%."],answer:"25% của 80 bằng 20."},
+      {grade:"6",topic:"Tỉ số",title:"Chia một số theo tỉ số",question:"Chia 25 thành hai phần theo tỉ số 2 : 3.",formula:"2 + 3 = 5 phần",steps:["Tổng số phần bằng nhau: 2 + 3 = 5 phần.","Giá trị một phần: 25 ÷ 5 = 5.","Hai phần lần lượt là 2 × 5 = 10 và 3 × 5 = 15."],answer:"Hai phần cần tìm là 10 và 15. Kiểm tra: 10 + 15 = 25 và 10 : 15 = 2 : 3."},
+      {grade:"7",topic:"Số nguyên",title:"Cộng hai số nguyên khác dấu",question:"Tính (−3) + 7.",formula:"−3 + 7 = ?",steps:["Trên trục số, bắt đầu tại −3.","Cộng 7 nghĩa là di chuyển 7 đơn vị sang phải.","Ta đi qua 0 ba đơn vị rồi thêm bốn đơn vị, đến 4."],answer:"Kết quả: (−3) + 7 = 4. Khi hai số khác dấu, lấy hiệu hai giá trị tuyệt đối và giữ dấu của số có giá trị tuyệt đối lớn hơn."},
+      {grade:"8",topic:"Phương trình bậc nhất",title:"Giải phương trình bậc nhất",question:"Giải phương trình 3x − 5 = 16.",formula:"3x − 5 = 16",steps:["Cộng 5 vào hai vế: 3x = 21.","Chia hai vế cho 3: x = 7.","Thử lại: 3 × 7 − 5 = 21 − 5 = 16, đúng với vế phải."],answer:"Nghiệm của phương trình là x = 7."},
+      {grade:"9",topic:"Phương trình bậc hai",title:"Phân tích thành nhân tử",question:"Giải phương trình x² − 5x + 6 = 0.",formula:"x² − 5x + 6 = (x − 2)(x − 3)",steps:["Tìm hai số có tích bằng 6 và tổng bằng 5: đó là 2 và 3.","Phân tích: x² − 5x + 6 = (x − 2)(x − 3) = 0.","Suy ra x − 2 = 0 hoặc x − 3 = 0."],answer:"Phương trình có hai nghiệm: x = 2 hoặc x = 3. Thử lại cả hai nghiệm đều làm vế trái bằng 0."},
+      {grade:"10",topic:"Hàm số bậc hai",title:"Tìm đỉnh của parabol",question:"Cho y = x² − 4x + 3. Tìm tọa độ đỉnh.",formula:"y = (x − 2)² − 1",steps:["Hoàn thành bình phương: x² − 4x + 3 = (x − 2)² − 1.","Dạng y = a(x − h)² + k cho biết đỉnh I(h;k).","Ở đây h = 2 và k = −1."],answer:"Đỉnh của parabol là I(2; −1); trục đối xứng là x = 2. Có thể kiểm tra bằng công thức xI = −b/(2a) = 4/2 = 2."},
+      {grade:"11",topic:"Lượng giác",title:"Giá trị lượng giác góc đặc biệt",question:"Tính sin 30°.",formula:"sin 30° = 1/2",steps:["Xét tam giác vuông 30°–60°–90° có tỉ lệ cạnh đối diện các góc lần lượt là 1 : √3 : 2.","Với góc 30°, sin bằng cạnh đối chia cạnh huyền.","Do đó sin 30° = 1/2."],answer:"Kết quả: sin 30° = 1/2. Lưu ý phân biệt sin 30° với cos 30° = √3/2."},
+      {grade:"12",topic:"Tích phân",title:"Tính tích phân xác định cơ bản",question:"Tính ∫ từ 0 đến 2 của (3x² + 1) dx.",formula:"∫₀² (3x² + 1) dx",steps:["Nguyên hàm của 3x² + 1 là x³ + x + C.","Áp dụng định lý Newton–Leibniz: [x³ + x]₀².","Thay cận: (2³ + 2) − (0³ + 0) = 10."],answer:"Giá trị tích phân bằng 10."}
+    ];
+    let mode = "guide";
+    let messages = [];
+    let selectedImage = "";
+    let busy = false;
+    let selectedExample = null;
+
+    function readStoredEndpoint() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+        return typeof saved.proxyUrl === "string" ? saved.proxyUrl : "";
+      } catch (_) { return ""; }
+    }
+    function writeStoredEndpoint(url) {
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (_) {}
+      saved.proxyUrl = url;
+      localStorage.setItem(STORE_KEY, JSON.stringify(saved));
+    }
+    function setStatus(message, ok) {
+      $("apiStatus").textContent = message;
+      $("apiStatus").classList.toggle("ok", Boolean(ok));
+      $("connectionText").textContent = ok ? "Đã kết nối máy chủ AI" : "Chưa xác nhận kết nối AI";
+    }
+    function healthUrl(endpoint) {
+      return endpoint.replace(/\/api\/tutor\/?$/i, "").replace(/\/+$/, "") + "/health";
+    }
+    async function checkHealth() {
+      const endpoint = $("endpoint").value.trim();
+      if (!endpoint) { setStatus("Chưa có endpoint · đang xem ví dụ mẫu", false); return; }
+      try {
+        const response = await fetch(healthUrl(endpoint), {method:"GET", cache:"no-store"});
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const data = await response.json();
+        if (!data.ok) throw new Error("Máy chủ chưa sẵn sàng");
+        setStatus("Máy chủ AI đang hoạt động · " + (data.service || "AI Mentor"), true);
+      } catch (_) {
+        setStatus("Chưa kết nối được · kiểm tra endpoint và cấu hình máy chủ", false);
+      }
+    }
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+    }
+    function renderExamples() {
+      const root = $("exampleGrid");
+      examples.forEach((example, index) => {
+        const card = document.createElement("article");
+        card.className = "example";
+        const meta = document.createElement("div"); meta.className = "exmeta";
+        const grade = document.createElement("span"); grade.className = "gradepill"; grade.textContent = "LỚP " + example.grade;
+        const topic = document.createElement("span"); topic.className = "topic"; topic.textContent = example.topic;
+        meta.append(grade, topic);
+        const title = document.createElement("h3"); title.textContent = example.title;
+        const formula = document.createElement("div"); formula.className = "formula"; formula.textContent = example.formula;
+        const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "Xem lời giải mẫu";
+        btn.addEventListener("click", () => showExample(index));
+        card.append(meta, title, formula, btn); root.append(card);
+      });
+    }
+    function showExample(index) {
+      const ex = examples[index]; selectedExample = ex;
+      $("grade").value = ex.grade;
+      $("topic").value = ex.topic;
+      $("gradeBadge").textContent = "LỚP " + ex.grade;
+      $("detailTitle").textContent = "Ví dụ lớp " + ex.grade + " · " + ex.title;
+      $("detailQuestion").textContent = "Đề bài: " + ex.question;
+      const steps = $("detailSteps"); steps.replaceChildren();
+      ex.steps.forEach((line, i) => {
+        const row = document.createElement("div"); row.className = "step";
+        const number = document.createElement("span"); number.className = "stepnum"; number.textContent = String(i + 1);
+        const text = document.createElement("div"); text.textContent = line;
+        row.append(number, text); steps.append(row);
+      });
+      $("detailAnswer").textContent = ex.answer;
+      $("exampleDetail").classList.add("show");
+      $("exampleDetail").scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
+    function addBubble(text, kind) {
+      $("welcome").classList.add("hidden");
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + kind;
+      bubble.textContent = text;
+      $("messages").append(bubble);
+      $("messages").scrollTop = $("messages").scrollHeight;
+      return bubble;
+    }
+    function setMode(nextMode) {
+      mode = nextMode;
+      document.querySelectorAll("[data-mode]").forEach(button => button.classList.toggle("active", button.dataset.mode === mode));
+      const labels = {guide:"Hướng dẫn từng bước",hint:"Gợi ý, chưa tiết lộ đáp án",solve:"Giải chi tiết",check:"Kiểm tra lời giải",similar:"Tạo bài tương tự"};
+      $("question").placeholder = labels[mode] + " — nhập đề Toán tại đây...";
+    }
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        if (!file || !/^image\/(png|jpeg|webp)$/i.test(file.type)) return reject(new Error("Chỉ hỗ trợ ảnh PNG, JPG hoặc WEBP."));
+        if (file.size > 10 * 1024 * 1024) return reject(new Error("Ảnh lớn hơn 10 MB. Hãy chọn ảnh nhỏ hơn."));
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("Không đọc được tệp ảnh."));
+        reader.onload = () => {
+          const image = new Image();
+          image.onerror = () => reject(new Error("Ảnh không hợp lệ."));
+          image.onload = () => {
+            const scale = Math.min(1, 1600 / Math.max(image.width, image.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(image.width * scale));
+            canvas.height = Math.max(1, Math.round(image.height * scale));
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", 0.82));
+          };
+          image.src = String(reader.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    async function send() {
+      if (busy) return;
+      const question = $("question").value.trim();
+      if (!question && !selectedImage) return;
+      const endpoint = $("endpoint").value.trim();
+      if (!endpoint) {
+        addBubble("Mình chưa được kết nối với máy chủ AI nên chưa thể xử lý câu hỏi tự do. Bạn có thể học ngay bằng 12 ví dụ mẫu bên dưới. Để bật phần hỏi đáp trực tuyến, phụ huynh hoặc nhà trường cần triển khai máy chủ rồi nhập endpoint HTTPS tại bảng thiết lập.", "error");
+        return;
+      }
+      if (!/^https:\/\//i.test(endpoint) && !/^http:\/\/localhost(?::\d+)?\//i.test(endpoint)) {
+        addBubble("Endpoint cần bắt đầu bằng HTTPS. Chỉ dùng localhost khi phát triển trên máy cá nhân.", "error");
+        return;
+      }
+      const grade = $("grade").value;
+      const outgoing = question || "Hãy đọc ảnh đề Toán, chép lại dữ kiện rồi hướng dẫn mình giải từng bước.";
+      const userContent = outgoing + (selectedImage ? "\n[Đã đính kèm ảnh đề bài]" : "");
+      addBubble(userContent, "user");
+      messages.push({role:"user",content:outgoing});
+      $("question").value = "";
+      const imageForRequest = selectedImage;
+      busy = true; $("send").disabled = true; $("send").textContent = "Đang xử lý…";
+      const waiting = addBubble("AI Mentor đang đọc đề và chuẩn bị lời giải...", "bot");
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 40000);
+        let response;
+        try {
+          response = await fetch(endpoint, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            signal:controller.signal,
+            body:JSON.stringify({
+              message:outgoing,
+              imageDataUrl:imageForRequest || undefined,
+              messages:messages.slice(0,-1).slice(-10),
+              grade:grade,
+              selectedTopic:$("topic").value,
+              mode:mode,
+              profile:{grade:grade,goal:"understand",level:$("level").value,selfLevel:"student",style:$("style").value}
+            })
+          });
+        } finally { clearTimeout(timeout); }
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || ("Máy chủ trả về HTTP " + response.status));
+        const answer = typeof data.reply === "string" ? data.reply.trim() : "";
+        if (!answer) throw new Error("Máy chủ chưa trả về lời giải dạng văn bản.");
+        waiting.remove();
+        addBubble(answer, "bot");
+        messages.push({role:"assistant",content:answer});
+        if (messages.length > 20) messages = messages.slice(-20);
+        if (imageForRequest) clearImage();
+        setStatus("Đã nhận câu trả lời từ AI Mentor", true);
+      } catch (error) {
+        waiting.remove();
+        const message = error.name === "AbortError" ? "Yêu cầu mất quá nhiều thời gian. Hãy thử gửi lại với đề ngắn hơn." : (error.message || "Kết nối AI gặp sự cố.");
+        addBubble(message + "\n\nCác ví dụ mẫu vẫn có thể xem mà không cần kết nối.", "error");
+        setStatus("Có lỗi khi gửi câu hỏi · kiểm tra máy chủ", false);
+      } finally {
+        busy = false; $("send").disabled = false; $("send").textContent = "Gửi câu hỏi ↗";
+      }
+    }
+    function clearImage() {
+      selectedImage = "";
+      $("imageInput").value = "";
+      $("imagePreview").classList.remove("show");
+      $("preview").removeAttribute("src");
+      $("imageName").textContent = "";
+    }
+    $("saveEndpoint").addEventListener("click", async () => {
+      const url = $("endpoint").value.trim();
+      if (url && !/^https:\/\//i.test(url) && !/^http:\/\/localhost(?::\d+)?\//i.test(url)) {
+        setStatus("Endpoint phải sử dụng HTTPS (trừ localhost khi phát triển).", false); return;
+      }
+      if (url && !window.confirm("Chỉ lưu địa chỉ máy chủ, không lưu API key. Hãy chắc chắn phụ huynh hoặc nhà trường đã quản lý endpoint này. Nội dung câu hỏi/ảnh sẽ được gửi đến máy chủ khi bạn hỏi AI. Tiếp tục?")) return;
+      try { writeStoredEndpoint(url); }
+      catch (_) { setStatus("Trình duyệt không cho phép lưu cấu hình.", false); return; }
+      await checkHealth();
+    });
+    $("grade").addEventListener("change", () => {
+      $("gradeBadge").textContent = $("grade").value === "auto" ? "TOÁN 1–12" : "LỚP " + $("grade").value;
+    });
+    document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => setMode(button.dataset.mode)));
+    $("send").addEventListener("click", send);
+    $("question").addEventListener("keydown", event => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); send(); } });
+    $("attachImage").addEventListener("click", () => $("imageInput").click());
+    $("imageInput").addEventListener("change", async event => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        selectedImage = await fileToDataUrl(file);
+        $("preview").src = selectedImage;
+        $("imageName").textContent = file.name;
+        $("imagePreview").classList.add("show");
+      } catch (error) { clearImage(); addBubble(error.message, "error"); }
+    });
+    $("removeImage").addEventListener("click", clearImage);
+    $("askExample").addEventListener("click", () => {
+      if (!selectedExample) return;
+      $("question").value = "Mình đang học lớp " + selectedExample.grade + ". Hãy giải thích lại bài: " + selectedExample.question + " Hãy giải từng bước, nêu lý do của mỗi bước và tạo thêm một ví dụ tương tự.";
+      $("question").focus();
+      $("question").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+    $("closeExample").addEventListener("click", () => $("exampleDetail").classList.remove("show"));
+
+    $("endpoint").value = readStoredEndpoint();
+    renderExamples();
+    checkHealth();
+  })();
+  </script>
+</body>
+</html>

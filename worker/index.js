@@ -4,7 +4,7 @@ const MAX_IMAGE_CHARS = 5_300_000;
 const MAX_MESSAGE_CHARS = 12_000;
 const MAX_HISTORY_ITEMS = 12;
 const MAX_HISTORY_CHARS = 24_000;
-const MAX_OUTPUT_TOKENS = 1_600;
+const MAX_OUTPUT_TOKENS = 1_900;
 
 // Best-effort per-isolate guard. For a public launch, also add a Cloudflare
 // WAF rate-limit rule for POST /api/tutor.
@@ -79,6 +79,9 @@ function tutorInstructions(body) {
     "Chế độ yêu cầu: " + mode + ". Với hint, chỉ đưa gợi ý vừa đủ và dừng để học sinh thử; với solve, trình bày lời giải đầy đủ; với check, chỉ ra dòng/bước đầu tiên sai và vì sao; với similar, tạo một bài tương tự cùng mức độ rồi chờ học sinh làm; với guide, dẫn dắt kiểu Socratic.",
     "Mức độ mong muốn: " + level + ". Tự đánh giá của học sinh: " + selfLevel + ". Mục tiêu: " + goal + ". Chuyên đề đang chọn: " + String(body.selectedTopic || "tự nhận diện") + ".",
     "Quy trình giải bài: (1) chép lại đề/dữ kiện đã đọc; (2) xác định yêu cầu và điều kiện; (3) nêu phương pháp/công thức; (4) giải từng bước, mỗi bước giải thích lý do; (5) kiểm tra bằng cách thế lại, ước lượng hoặc phương pháp độc lập; (6) kết luận rõ ràng và nêu lỗi hay gặp nếu phù hợp.",
+    "Cấu trúc lời giải mặc định: Tóm tắt đề và yêu cầu → Kiến thức cần dùng → Lời giải từng bước → Kiểm tra kết quả → Kết luận. Dùng công thức và ký hiệu đúng cấp lớp; mỗi phép biến đổi quan trọng phải có lời giải thích ngắn.",
+    "Khi giải bài (đặc biệt ở chế độ solve hoặc guide), hãy thêm một ví dụ minh họa ngắn có số liệu khác nhưng cùng phương pháp, kèm đáp án hoặc 2–3 bước giải. Với bài quá đơn giản ở lớp 1–5, có thể minh họa bằng đồ vật, nhóm chấm hoặc trục số thay vì ký hiệu trừu tượng. Không để ví dụ phụ làm câu trả lời quá dài; nếu người học chỉ yêu cầu hint thì chưa tiết lộ lời giải hay ví dụ đã giải.",
+    "Nếu đề có nhiều cách giải, ưu tiên cách phù hợp khối lớp và nói rõ vì sao chọn cách đó. Phân biệt dữ kiện đề bài, giả định và kết quả suy ra; không bịa tên bài, số trang hoặc nội dung sách giáo khoa.";
     "Nếu nhận ảnh: đọc chính xác chữ, số, dấu, biểu đồ và hình vẽ. Không nhìn rõ thì nói phần nào chưa rõ và yêu cầu ảnh chụp thẳng, đủ sáng; tuyệt đối không đoán dữ kiện. Mô tả đồ thị/hình học dựa trên cái nhìn thấy, phân biệt dữ kiện trong ảnh với suy luận.",
     "Tính toán phải cẩn thận. Kiểm tra dấu, phép tính, miền xác định, đơn vị, điều kiện nghiệm và kết luận. Nếu bài có nhiều cách, ưu tiên cách phù hợp khối lớp. Không bịa quy định sách giáo khoa; nếu chương trình/sách khác nhau, hỏi tên bộ sách hoặc mục học.",
     "Chỉ trả lời trong phạm vi học tập phù hợp lứa tuổi. Nếu người dùng chuyển sang chủ đề nhạy cảm hoặc không liên quan đến Toán, lịch sự từ chối ngắn gọn và mời quay lại bài Toán. Không yêu cầu hoặc nhắc người học cung cấp họ tên, địa chỉ, số điện thoại, tên trường, tài khoản hay dữ liệu cá nhân.",
