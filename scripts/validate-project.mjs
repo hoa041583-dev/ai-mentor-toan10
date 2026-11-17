@@ -5,6 +5,11 @@ import { spawnSync } from "node:child_process";
 
 const htmlFiles = ["index.html", "mentor.html"];
 let checkedBlocks = 0;
+const mentorHtml = fs.readFileSync("mentor.html", "utf8");
+const gradeExamples = new Set([...mentorHtml.matchAll(/grade:"(\d+)"/g)].map(match => Number(match[1])));
+for (let grade = 1; grade <= 12; grade++) {
+  if (!gradeExamples.has(grade)) throw new Error("mentor.html is missing the sample example for grade " + grade + ".");
+}
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ai-mentor-check-"));
 try {
   for (const file of htmlFiles) {
