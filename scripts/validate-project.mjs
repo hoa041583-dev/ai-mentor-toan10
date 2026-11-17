@@ -7,20 +7,30 @@ const html = fs.readFileSync("index.html", "utf8");
 for (const tag of ["</head>", "</style>", "</body>", "</html>"]) {
   if (!html.includes(tag)) throw new Error("index.html is missing " + tag);
 }
-const blocks = [...html.matchAll(/<script\\b[^>]*>([\\s\\S]*?)<\\/script>/gi)];
-if (blocks.length < 1) throw new Error("No inline script blocks found.");
+const blocks = [];
+let cursor = 0;
+while (true) {
+  const start = html.indexOf("<script", cursor);
+  if (start < 0) break;
+  const openEnd = html.indexOf(">", start);
+  const close = html.indexOf("</script>", openEnd + 1);
+  if (openEnd < 0 || close < 0) throw new Error("Malformed script tag in index.html.");
+  blocks.push(html.slice(openEnd + 1, close));
+  cursor = close + 9;
+}
+if (blocks.length < 1) throw new Error("No script blocks found.");
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ai-mentor-check-"));
 try {
   for (let i = 0; i < blocks.length; i++) {
     const file = path.join(dir, "inline-" + i + ".js");
-    fs.writeFileSync(file, blocks[i][1], "utf8");
+    fs.writeFileSync(file, blocks[i], "utf8");
     const check = spawnSync(process.execPath, ["--check", file], { encoding: "utf8" });
     if (check.status !== 0) {
       process.stderr.write(check.stderr || check.stdout || "JavaScript syntax error");
-      throw new Error("Inline script " + (i + 1) + " failed syntax validation.");
+      throw new Error("Script block " + (i + 1) + " failed syntax validation.");
     }
   }
-  console.log("Validated " + blocks.length + " inline JavaScript blocks in index.html.");
+  console.log("Validated " + blocks.length + " JavaScript script blocks in index.html.");
 } finally {
   fs.rmSync(dir, { recursive: true, force: true });
 }
