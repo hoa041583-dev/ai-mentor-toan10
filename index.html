@@ -1196,7 +1196,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
           message: text || 'Hãy đọc và giải bài Toán trong ảnh đính kèm.',
           imageDataUrl: imageDataUrl || undefined,
           messages: store.messages.slice(0, -1).slice(-12).map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text })),
-          profile: store.profile, grade: store.profile.grade || $('#tutorGrade')?.value || 'auto',
+          profile: store.profile, grade: $('#tutorGrade')?.value || store.profile.grade || 'auto',
           selectedTopic: currentTopic(), mode: currentMode()
         })
       });
