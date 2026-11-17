@@ -1,0 +1,10 @@
+name = "ai-mentor-toan10-api"
+main = "worker/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+MODEL = "gpt-6.1-terra"
+
+[observability]
+enabled = true

@@ -29,7 +29,14 @@
 @media(max-width:760px){.tutor-commandbar{align-items:flex-start;flex-direction:column}.tutor-command-actions{width:100%}.tutor-settings-row{grid-template-columns:1fr 1fr}.tutor-settings-row label:last-child{grid-column:1/-1}.tutor-chat-messages{height:480px;min-height:340px}.tutor-side-column{grid-template-columns:1fr}.tutor-connect-panel{grid-column:auto}.welcome-prompts{grid-template-columns:1fr}.tutor-message{max-width:98%}.tutor-message.user{max-width:90%}.tutor-composer{align-items:stretch}.tutor-send{padding:9px}}
 .tutor-sessions-list{display:grid;gap:7px}.tutor-session-row{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:left}.tutor-session-row:hover{border-color:#c8c2ff;background:#fbfaff}.session-mark{width:24px;height:24px;display:grid;place-items:center;border-radius:8px;background:var(--brand-soft);color:var(--brand);font-size:8px;font-weight:900}.session-copy{min-width:0}.session-copy b{display:block;color:#555a73;font-size:8px;line-height:1.5;overflow-wrap:anywhere}.session-copy small{display:block;color:var(--muted);font-size:7px;margin-top:3px}.session-arrow{color:var(--brand);font-size:12px}
 
-  </style>
+
+/* K-12 AI Mentor additions */
+.tutor-settings-row{grid-template-columns:.9fr 1.25fr .9fr 1.1fr}
+.tutor-attachment-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 2px 4px;color:var(--muted);font-size:8px}
+.tutor-image-preview{display:flex;align-items:center;gap:12px;padding:9px 11px;margin:6px 0 8px;border:1px solid var(--line);border-radius:12px;background:#fcfcff}
+.tutor-image-preview img{display:block;max-width:180px;max-height:130px;object-fit:contain;border-radius:8px}
+@media(max-width:760px){.tutor-settings-row{grid-template-columns:1fr 1fr}.tutor-image-preview img{max-width:130px}}
+
 </head>
 <body>
 <div class="app">
@@ -65,7 +72,7 @@
       <div class="page-head tutor-page-head">
         <div class="eyebrow">PERSONAL AI MATH COACH · SOCRATIC LEARNING</div>
         <h1>Gia sư AI cá nhân</h1>
-        <p>Hỏi bài, nhận gợi ý theo từng bước, kiểm tra lời giải, luyện bài tương tự và lưu lại những điều cần ôn. Gia sư kết hợp thư viện Toán 10 cùng bộ giải cục bộ; có thể kết nối backend AI riêng khi nhóm triển khai máy chủ.</p>
+        <p>Gia sư AI chuyên biệt cho Toán lớp 1–12. Chọn khối lớp hoặc để AI tự nhận diện; hỏi bằng văn bản, gửi ảnh đề bài, yêu cầu gợi ý, lời giải, kiểm tra bài và bài luyện tập phù hợp.</p>
       </div>
       <div class="tutor-commandbar panel">
         <div class="tutor-command-title"><div class="bot-avatar">✦</div><div><strong>AI Mentor · Math Coach</strong><small id="tutorEngineStatus">● Bộ máy học tập nội bộ sẵn sàng</small></div></div>
@@ -74,6 +81,7 @@
       <div class="tutor-layout tutor-layout-pro">
         <div class="panel tutor-main-panel">
           <div class="tutor-settings-row">
+            <label><span class="field-label">Khối lớp</span><select class="field" id="tutorGrade"><option value="auto">Tự nhận diện lớp</option><option value="1">Lớp 1</option><option value="2">Lớp 2</option><option value="3">Lớp 3</option><option value="4">Lớp 4</option><option value="5">Lớp 5</option><option value="6">Lớp 6</option><option value="7">Lớp 7</option><option value="8">Lớp 8</option><option value="9">Lớp 9</option><option value="10">Lớp 10</option><option value="11">Lớp 11</option><option value="12">Lớp 12</option></select></label>
             <label><span class="field-label">Chuyên đề</span><select class="field" id="tutorTopic"><option value="all">Tự nhận diện từ câu hỏi</option></select></label>
             <label><span class="field-label">Mức độ</span><select class="field" id="tutorLevel"><option value="auto">Tự điều chỉnh</option><option value="Cơ bản">Cơ bản</option><option value="Vận dụng">Vận dụng</option><option value="Nâng cao">Nâng cao</option></select></label>
             <label><span class="field-label">Cách hướng dẫn</span><select class="field" id="tutorStyle"><option value="socratic">Gợi mở từng bước</option><option value="detailed">Giải chi tiết</option><option value="concise">Ngắn gọn, trọng tâm</option></select></label>
@@ -97,8 +105,10 @@
             </div>
           </div>
           <div class="tutor-compose-tools"><span>Gợi ý nhập: <kbd>Enter</kbd> gửi · <kbd>Shift + Enter</kbd> xuống dòng</span><button class="text-btn" id="tutorClearChat">Xóa nội dung phiên</button></div>
-          <div class="chat-composer tutor-composer"><textarea id="tutorInput" rows="2" placeholder="Nhập đề Toán, câu hỏi hoặc lời giải bạn đã thử…"></textarea><button class="btn tutor-send" id="sendTutor">Gửi câu hỏi ↗</button></div>
-          <div class="tutor-privacy-note"><span>🔒</span><span>Không nhập họ tên, số điện thoại hoặc thông tin cá nhân. Hội thoại được lưu trên trình duyệt này. Chế độ mặc định chạy cục bộ, không gửi dữ liệu ra ngoài.</span></div>
+          <div class="tutor-attachment-bar"><button class="btn ghost mini" id="tutorAttachImage" type="button">▧ Đính kèm ảnh đề bài</button><input id="tutorImageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden><span id="tutorImageMeta">Ảnh JPG, PNG hoặc WEBP · tối đa 10 MB</span></div>
+          <div id="tutorImagePreview" class="tutor-image-preview hidden"><img id="tutorImagePreviewImg" alt="Ảnh đề Toán đã chọn"><button id="tutorRemoveImage" class="btn ghost mini" type="button">Xóa ảnh</button></div>
+          <div class="chat-composer tutor-composer"><textarea id="tutorInput" rows="2" placeholder="Nhập đề Toán hoặc câu hỏi bạn đang vướng…"></textarea><button class="btn tutor-send" id="sendTutor">Gửi câu hỏi ↗</button></div>
+          <div class="tutor-privacy-note"><span>🔒</span><span>Đây là công cụ AI, có thể mắc lỗi nên hãy kiểm tra lời giải. Không gửi họ tên, trường/lớp cụ thể, số điện thoại hay dữ liệu cá nhân. Khi kết nối AI trực tuyến, câu hỏi và ảnh được gửi tới máy chủ AI để xử lý; hội thoại văn bản vẫn được lưu trên trình duyệt này.</span></div>
         </div>
         <aside class="tutor-side-column">
           <div class="panel tutor-side-panel">
@@ -123,10 +133,10 @@
             <p class="footnote" id="tutorStatsLine" style="margin:10px 0 0">Đã hỏi 0 lượt · 0 bài đã giải · 0 lượt kiểm tra</p>
           </div>
           <div class="panel tutor-side-panel tutor-connect-panel">
-            <div class="panel-title"><div><h2>Kết nối AI trực tuyến</h2><p>Dành cho nhóm có backend riêng.</p></div><span class="pill amber">Tùy chọn</span></div>
-            <label class="field-label" for="tutorProxyUrl">Địa chỉ API proxy HTTPS</label><input class="field" id="tutorProxyUrl" type="url" placeholder="https://your-server.example/api/tutor">
+            <div class="panel-title"><div><h2>AI Mentor riêng · Toán 1–12</h2><p>Kết nối máy chủ AI do quản trị viên cấu hình.</p></div><span class="pill amber">Cần cấu hình</span></div>
+            <label class="field-label" for="tutorProxyUrl">Endpoint AI riêng (HTTPS)</label><input class="field" id="tutorProxyUrl" type="url" placeholder="https://ai-mentor-api.example.workers.dev/api/tutor">
             <button class="btn ghost tutor-save-profile" id="tutorSaveProxy">Lưu địa chỉ kết nối</button>
-            <p class="footnote">Không đặt API key trong HTML/JavaScript phía trình duyệt. Endpoint cần do nhóm quản lý, kiểm tra dữ liệu đầu vào và giữ bí mật thông tin xác thực. Nếu chưa cấu hình, website tiếp tục dùng gia sư cục bộ.</p>
+            <p class="footnote">Không nhập API key tại đây. Khóa truy cập chỉ được lưu bí mật trên máy chủ và do phụ huynh/nhà trường quản lý. Khi chưa có endpoint, gia sư vẫn chạy ở chế độ cục bộ; ảnh đề bài chỉ được đọc khi AI trực tuyến đã kết nối.</p>
           </div>
         </aside>
       </div>
@@ -636,7 +646,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
 
   const defaults = {
     mode: 'guide',
-    profile: { goal: 'understand', selfLevel: 'average', level: 'auto', style: 'socratic' },
+    profile: { goal: 'understand', selfLevel: 'average', level: 'auto', style: 'socratic', grade: 'auto' },
     proxyUrl: '', messages: [], sessions: [], notes: [],
     stats: { asked: 0, solved: 0, checked: 0, helpful: 0 }
   };
@@ -647,6 +657,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
   let pendingQuestion = null;
   let pendingStep = null;
   let busy = false;
+  let selectedImageDataUrl = '';
 
   function loadStore() {
     try {
@@ -1167,28 +1178,34 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
     return { text: `Mình chưa đủ dữ kiện để giải chính xác câu hỏi này. Bạn có thể thử:\n\n• Gửi nguyên đề bài và các dữ kiện.\n• Gõ phương trình dạng: x^2 - 5x + 6 = 0.\n• Chọn chuyên đề ở phía trên để giới hạn phạm vi.\n• Nói rõ bạn muốn “gợi ý”, “giải chi tiết” hay “kiểm tra lời giải”.\n\nHiện tại, gia sư cục bộ hỗ trợ tra cứu thư viện Toán 10, phương trình và bất phương trình bậc nhất/bậc hai dạng đơn giản, cùng phân tích hàm số bậc hai. Với bài hình học hoặc biểu thức phức tạp, mình sẽ hướng dẫn phương pháp từ học liệu thay vì đoán đáp án.`, label: 'CẦN THÊM DỮ KIỆN' };
   }
 
-  async function remoteTutor(text) {
+  async function remoteTutor(text, imageDataUrl = '') {
     const url = store.proxyUrl.trim();
     if (!url) return null;
     if (!/^https:\/\//i.test(url) && !/^http:\/\/localhost(?::\d+)?\//i.test(url)) {
       throw new Error('Địa chỉ backend phải dùng HTTPS (trừ localhost khi phát triển).');
     }
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 18000);
+    const timer = setTimeout(() => controller.abort(), 35000);
     try {
+      const content = [{ type: 'input_text', text: text || 'Hãy đọc và giải bài Toán trong ảnh đính kèm.' }];
+      if (imageDataUrl) content.push({ type: 'input_image', image_url: imageDataUrl, detail: 'high' });
       const response = await fetch(url, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
         body: JSON.stringify({
-          message: text,
+          message: text || 'Hãy đọc và giải bài Toán trong ảnh đính kèm.',
+          imageDataUrl: imageDataUrl || undefined,
           messages: store.messages.slice(0, -1).slice(-12).map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text })),
-          profile: store.profile, selectedTopic: currentTopic(), mode: currentMode(),
-          instruction: 'Tutor in Vietnamese. Teach grade 10 mathematics step by step. Do not invent facts; ask for missing information; encourage student reasoning.'
+          profile: store.profile, grade: store.profile.grade || $('#tutorGrade')?.value || 'auto',
+          selectedTopic: currentTopic(), mode: currentMode()
         })
       });
-      if (!response.ok) throw new Error(`Backend trả về HTTP ${response.status}.`);
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || `Backend trả về HTTP ${response.status}.`);
+      }
       const data = await response.json();
       const reply = data.reply || data.answer || data.output_text;
-      if (typeof reply !== 'string' || !reply.trim()) throw new Error('Backend không trả trường reply/answer dạng văn bản.');
+      if (typeof reply !== 'string' || !reply.trim()) throw new Error('Backend không trả lời ở định dạng văn bản.');
       return reply.trim();
     } finally { clearTimeout(timer); }
   }
@@ -1277,6 +1294,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
   function renderProfile() {
     const p = store.profile;
     if ($('#tutorGoal')) $('#tutorGoal').value = p.goal;
+    if ($('#tutorGrade')) $('#tutorGrade').value = p.grade || 'auto';
     if ($('#tutorSelfLevel')) $('#tutorSelfLevel').value = p.selfLevel;
     if ($('#tutorLevel')) $('#tutorLevel').value = p.level;
     if ($('#tutorStyle')) $('#tutorStyle').value = p.style;
@@ -1313,27 +1331,40 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
   async function send() {
     if (busy) return;
     const input = $('#tutorInput'); if (!input) return;
-    const text = input.value.trim(); if (!text) return;
+    const text = input.value.trim();
+    const imageDataUrl = selectedImageDataUrl;
+    if (!text && !imageDataUrl) return;
+    const question = text || 'Hãy đọc đề Toán trong ảnh và hướng dẫn em giải từng bước.';
     input.value = ''; input.style.height = 'auto';
     $('#tutorFollowups')?.remove();
-    pushMessage('user', text);
+    pushMessage('user', question + (imageDataUrl ? '\n[Đã đính kèm ảnh đề bài]' : ''));
     store.stats.asked += 1; persist();
     busy = true; $('#sendTutor').disabled = true; $('#sendTutor').textContent = 'Đang nghĩ…'; showTyping(true);
-    let reply = '', label = 'GIA SƯ TOÁN', match = null;
+    let reply = '', label = 'GIA SƯ TOÁN', match = null, clearImage = false;
     try {
-      const remote = await remoteTutor(text);
+      if (imageDataUrl && !store.proxyUrl.trim()) {
+        throw new Error('Ảnh đã được chọn nhưng AI đọc ảnh chưa thể hoạt động khi chưa kết nối endpoint AI riêng. Hãy nhờ phụ huynh/nhà trường cấu hình máy chủ AI trước.');
+      }
+      const remote = await remoteTutor(question, imageDataUrl);
       if (remote) {
-        reply = remote; label = 'AI TRỰC TUYẾN'; setStatus('Đang kết nối backend AI trực tuyến.');
+        reply = remote; label = 'AI MENTOR · LỚP 1–12'; clearImage = Boolean(imageDataUrl);
+        setStatus('AI Mentor riêng đang hoạt động · Toán lớp 1–12');
       } else {
-        const result = localTutor(text); reply = result.text; label = result.label || label; match = result.match || detected;
-        setStatus('Bộ máy học tập nội bộ sẵn sàng · Offline-first');
+        const result = localTutor(question); reply = result.text; label = result.label || label; match = result.match || detected;
+        setStatus('Bộ máy học tập nội bộ sẵn sàng · Chưa kết nối AI riêng');
       }
     } catch (error) {
-      const result = localTutor(text); reply = result.text + `\n\nLưu ý kết nối: ${error.message} Gia sư đã chuyển về chế độ cục bộ.`;
-      label = result.label || label; match = result.match || detected; setStatus('Đang dùng chế độ cục bộ · Backend chưa phản hồi', true);
+      if (imageDataUrl && !store.proxyUrl.trim()) {
+        reply = 'Mình đã nhận ảnh bạn chọn, nhưng chưa gửi ảnh đi đâu cả. Tính năng đọc ảnh cần endpoint AI riêng được cấu hình trước.\n\nBạn vẫn có thể gõ lại đề bài bằng văn bản để dùng bộ giải cục bộ, hoặc nhờ phụ huynh/nhà trường cấu hình máy chủ AI cho website.';
+        label = 'ẢNH ĐỀ BÀI · CHỜ KẾT NỐI';
+      } else {
+        const result = localTutor(question); reply = result.text + `\n\nLưu ý kết nối: ${error.message} Gia sư đã chuyển về chế độ cục bộ.`;
+        label = result.label || label; match = result.match || detected; setStatus('Đang dùng chế độ cục bộ · Backend chưa phản hồi', true);
+      }
     } finally {
       showTyping(false); busy = false; $('#sendTutor').disabled = false; $('#sendTutor').textContent = 'Gửi câu hỏi ↗';
     }
+    if (clearImage) { selectedImageDataUrl = ''; renderTutorImagePreview(); }
     pushMessage('assistant', reply, label);
     renderDetected(match || detected); renderNotes();
     addFollowups(match || detected, currentMode());
@@ -1354,7 +1385,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
   }
   function exportConversation() {
     if (!store.messages.length) { toastTutor('Chưa có hội thoại để xuất.'); return; }
-    const lines = ['AI MENTOR — HỘI THOẠI GIA SƯ TOÁN 10', `Xuất lúc: ${new Date().toLocaleString('vi-VN')}`, ''];
+    const lines = ['AI MENTOR — HỘI THOẠI GIA SƯ TOÁN LỚP 1–12', `Xuất lúc: ${new Date().toLocaleString('vi-VN')}`, ''];
     store.messages.forEach(m => lines.push(`${m.role === 'user' ? 'BẠN' : 'AI MENTOR'} · ${new Date(m.time).toLocaleString('vi-VN')}`, m.text, ''));
     const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob); const a = document.createElement('a');
@@ -1375,6 +1406,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
     store.profile = {
       ...store.profile,
       goal: $('#tutorGoal').value,
+      grade: $('#tutorGrade')?.value || 'auto',
       selfLevel: $('#tutorSelfLevel').value,
       level: $('#tutorLevel').value,
       style: $('#tutorStyle').value
@@ -1429,6 +1461,15 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
     $('#tutorExportChat')?.addEventListener('click', exportConversation);
     $('#tutorSaveProfile')?.addEventListener('click', saveProfile);
     $('#tutorSaveProxy')?.addEventListener('click', saveProxy);
+    $('#tutorAttachImage')?.addEventListener('click', () => $('#tutorImageInput')?.click());
+    $('#tutorImageInput')?.addEventListener('change', async event => {
+      const file = event.target.files?.[0]; if (!file) return;
+      try { selectedImageDataUrl = await prepareTutorImage(file); renderTutorImagePreview(); toastTutor('Đã chọn ảnh đề bài.'); }
+      catch (error) { selectedImageDataUrl = ''; renderTutorImagePreview(); toastTutor(error.message || 'Không thể dùng ảnh này.'); }
+      event.target.value = '';
+    });
+    $('#tutorRemoveImage')?.addEventListener('click', () => { selectedImageDataUrl = ''; renderTutorImagePreview(); });
+    renderTutorImagePreview();
     $('#tutorInput')?.addEventListener('input', e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 180) + 'px'; });
   }
 
@@ -1443,7 +1484,7 @@ Bạn có thể mở “${f.name}” trong Thư viện dạng toán để xem l�
 </script>
 <script>
 /*
- * AI Mentor — Mô phỏng định dạng Toán 2026 (phạm vi kiến thức Toán 10)
+ * AI Mentor — Mô phỏng định dạng Toán 2026 (phần thi thử Toán 10)
  * Bộ câu hỏi do nhóm biên soạn mới để luyện tập; không sao chép đề thi chính thức.
  * Format tham chiếu: 12 MCQ + 4 nhóm đúng/sai (4 ý/nhóm) + 6 trả lời ngắn; 90 phút.
  */
