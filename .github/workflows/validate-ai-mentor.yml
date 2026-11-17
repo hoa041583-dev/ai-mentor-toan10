@@ -1,0 +1,27 @@
+name: Validate AI Mentor K-12
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "index.html"
+      - "worker/**"
+      - "scripts/**"
+      - "wrangler.toml"
+      - ".github/workflows/validate-ai-mentor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check inline website JavaScript
+        run: node scripts/validate-project.mjs
+      - name: Check Worker JavaScript
+        run: node --check worker/index.js
